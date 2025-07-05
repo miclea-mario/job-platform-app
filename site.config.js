@@ -1,6 +1,6 @@
 module.exports = {
-  sitename: 'Your Awesome App',
-  title: 'Your Awesome App',
+  sitename: 'HorizonHire',
+  title: 'HorizonHire - Job Platform',
   description: `
   Starter template for React and Next.js projects packed with features like authentication,
   custom hooks, Tailwind support and many more.
