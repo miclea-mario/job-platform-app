@@ -41,7 +41,7 @@ const HeroLayout = ({ children }) => {
       <div className="relative min-h-screen flex items-center">
         {/* Spline Background */}
         <div className="absolute inset-0 z-0">
-          <Spline scene="https://draft.spline.design/W2HiUlfdgL0Ewi6b/scene.splinecode" />
+          <Spline scene="https://prod.spline.design/GhYd6r5P55Hy5yYv/scene.splinecode" />
         </div>
 
         {/* Hero Content */}

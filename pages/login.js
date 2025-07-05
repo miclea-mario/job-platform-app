@@ -17,7 +17,7 @@ const Page = () => {
         </div>
       </div>
       <div className="relative hidden bg-muted lg:block">
-        <Spline scene="https://draft.spline.design/W2HiUlfdgL0Ewi6b/scene.splinecode" />
+        <Spline scene="https://prod.spline.design/GhYd6r5P55Hy5yYv/scene.splinecode" />
       </div>
     </main>
   );
