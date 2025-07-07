@@ -1,7 +1,7 @@
 import { LoadMoreOnClick } from '@components/Buttons';
 import { TableError, TableFacetedFilter, TableLoading, TableSuccess } from '@components/Tables';
 import { Button } from '@components/ui/button';
-import { APPLICATION_STATUS } from '@constants/application';
+import { APPLICATION_STATUS, MATCH_SCORE_OPTIONS } from '@constants/application';
 import applicationColumns from '@data/user/application-columns';
 import { useInfiniteQuery, useQuery } from '@hooks';
 import { X } from 'lucide-react';
@@ -42,13 +42,6 @@ const TableFilterToolbar = ({ options, setOptions }) => {
     };
   });
 
-  // Match score options (for filtering by AI match score ranges)
-  const matchScoreOptions = [
-    { label: 'High Match (80%+)', value: 'high' },
-    { label: 'Medium Match (50-79%)', value: 'medium' },
-    { label: 'Low Match (0-49%)', value: 'low' },
-  ];
-
   const handleFilterChange = (key, values) => {
     setOptions({
       ...options,
@@ -74,7 +67,7 @@ const TableFilterToolbar = ({ options, setOptions }) => {
       <TableFacetedFilter
         title="Match Score"
         multiSelect={true}
-        options={matchScoreOptions}
+        options={MATCH_SCORE_OPTIONS}
         selectedValues={options.matchScore?.split(',') || []}
         onFilterChange={(values) => handleFilterChange('matchScore', values)}
       />
