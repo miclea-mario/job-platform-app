@@ -52,10 +52,7 @@ const ApplicationDetailsSheet = ({ application, isOpen, hide }) => {
         <SheetContent className="md:min-w-[50%] overflow-y-auto">
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
-              Application Details{' '}
-              <Badge variant={application.status}>
-                {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-              </Badge>
+              Application Details <Badge variant={application.status}>{application.status}</Badge>
             </SheetTitle>
           </SheetHeader>
 
@@ -76,12 +73,23 @@ const ApplicationDetailsSheet = ({ application, isOpen, hide }) => {
               {/* Actions */}
 
               <div className="flex gap-2">
+                {![APPLICATION_STATUS.PENDING_INTERVIEW, APPLICATION_STATUS.INTERVIEWED].includes(
+                  application.status
+                ) && (
+                  <Button
+                    className="flex-1"
+                    variant="default"
+                    onClick={() => handleClick(APPLICATION_STATUS.PENDING_INTERVIEW)}
+                  >
+                    Interview
+                  </Button>
+                )}
                 <Button
                   className="flex-1"
                   variant="default"
-                  onClick={() => handleClick(APPLICATION_STATUS.PENDING_INTERVIEW)}
+                  onClick={() => handleClick(APPLICATION_STATUS.ACCEPTED)}
                 >
-                  Interview
+                  Accept
                 </Button>
                 <Button
                   className="flex-1"
