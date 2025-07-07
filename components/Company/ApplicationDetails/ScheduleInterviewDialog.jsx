@@ -72,7 +72,6 @@ const ScheduleInterviewDialog = ({ isOpen, onClose, application }) => {
     const interview = {
       date: data.date,
       time: data.time,
-      notes: data.notes,
     };
 
     // Update the application status with interview details
