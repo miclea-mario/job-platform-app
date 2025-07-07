@@ -7,7 +7,6 @@ import { useMutation } from '@hooks';
 import { isFunction } from 'lodash';
 import {
   ArrowLeft,
-  Bookmark,
   Briefcase,
   Building2,
   Calendar,
@@ -163,9 +162,6 @@ const JobDetailsPage = ({ job, refetch }) => {
             <div className="flex items-center gap-4">
               <Button variant="outline" size="icon">
                 <Share2 className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="icon">
-                <Bookmark className="h-4 w-4" />
               </Button>
               {renderApplyButton()}
             </div>
