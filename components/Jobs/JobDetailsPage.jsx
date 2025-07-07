@@ -4,6 +4,7 @@ import { Button } from '@components/ui/button';
 import { APPLICATION_STATUS } from '@constants/application';
 import { formatDate } from '@functions';
 import { useMutation } from '@hooks';
+import { toaster } from '@lib';
 import { isFunction } from 'lodash';
 import {
   ArrowLeft,
@@ -103,6 +104,11 @@ const JobDetailsPage = ({ job, refetch }) => {
     );
   };
 
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toaster.success('Job link copied to clipboard!');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
@@ -160,7 +166,7 @@ const JobDetailsPage = ({ job, refetch }) => {
             </div>
 
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" onClick={copyLink}>
                 <Share2 className="h-4 w-4" />
               </Button>
               {renderApplyButton()}
