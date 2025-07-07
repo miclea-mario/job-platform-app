@@ -5,6 +5,7 @@ import {
   useVideo,
 } from '@100mslive/react-sdk';
 import { classnames } from '@lib';
+import { Mic, MicOff, Video, VideoOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const Peer = ({ peer }) => {
@@ -110,21 +111,9 @@ const Peer = ({ peer }) => {
               )}
             >
               {peer.audioTrack ? (
-                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <Mic className="h-3.5 w-3.5" />
               ) : (
-                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fillRule="evenodd"
-                    d="M9.383 3.076A1 1 0 0110 4v6a1 1 0 01-1.707.707L6.586 9H4a1 1 0 01-1-1V6a1 1 0 011-1h2.586l1.707-1.707a1 1 0 011.09-.217zM12.293 7.293a1 1 0 011.414 0L15 8.586l1.293-1.293a1 1 0 111.414 1.414L16.414 10l1.293 1.293a1 1 0 01-1.414 1.414L15 11.414l-1.293 1.293a1 1 0 01-1.414-1.414L13.586 10l-1.293-1.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <MicOff className="h-3.5 w-3.5" />
               )}
             </div>
 
@@ -136,23 +125,9 @@ const Peer = ({ peer }) => {
               )}
             >
               {isPeerVideoEnabled ? (
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                  />
-                </svg>
+                <Video className="h-3.5 w-3.5" />
               ) : (
-                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"
-                  />
-                </svg>
+                <VideoOff className="h-3.5 w-3.5" />
               )}
             </div>
           </div>

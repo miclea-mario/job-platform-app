@@ -7,6 +7,7 @@ import {
 } from '@100mslive/react-sdk';
 import { Button } from '@components';
 import { classnames } from '@lib';
+import { AlertTriangle, Circle, RefreshCw, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Footer from './Footer';
 import Peer from './Peer';
@@ -30,19 +31,7 @@ const Conference = () => {
           <div className="text-center">
             <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-blue-900/20 dark:to-indigo-900/20">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40">
-                <svg
-                  className="h-6 w-6 text-blue-600 dark:text-blue-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-                  />
-                </svg>
+                <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
@@ -146,19 +135,13 @@ const InterviewContent = ({ token, user, applicationId }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="relative">
-                  <span className="inline-block h-3 w-3 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span className="absolute inset-0 h-3 w-3 rounded-full bg-emerald-500 animate-ping opacity-30"></span>
-                </div>
                 <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
                   Interview Room
                 </h1>
               </div>
               <div className="hidden sm:block">
                 <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                  <svg className="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 8 8">
-                    <circle cx={4} cy={4} r={3} />
-                  </svg>
+                  <Circle className="mr-1 h-3 w-3 fill-current" />
                   {isConnected ? 'Live' : 'Connecting'}
                 </span>
               </div>
@@ -167,19 +150,7 @@ const InterviewContent = ({ token, user, applicationId }) => {
             <div className="flex items-center gap-3">
               {isConnected && (
                 <div className="hidden md:flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <svg
-                    className="mr-1.5 h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-                    />
-                  </svg>
+                  <Users className="mr-1.5 h-4 w-4" />
                   {peers.length} participant{peers.length !== 1 ? 's' : ''}
                 </div>
               )}
@@ -226,19 +197,7 @@ const InterviewContent = ({ token, user, applicationId }) => {
                 <div className="text-center">
                   <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-50 dark:bg-red-900/30">
                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/50">
-                      <svg
-                        className="h-6 w-6 text-red-600 dark:text-red-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
+                      <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
                     </div>
                   </div>
 
@@ -255,22 +214,7 @@ const InterviewContent = ({ token, user, applicationId }) => {
                     onClick={() => window.location.reload()}
                     className="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-3 text-white font-medium transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
-                      <path d="M21 3v5h-5"></path>
-                      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
-                      <path d="M3 21v-5h5"></path>
-                    </svg>
+                    <RefreshCw className="h-4 w-4" />
                     Try Again
                   </Button>
                 </div>
