@@ -34,10 +34,11 @@ const ApplicationsTable = () => {
 
 const TableFilterToolbar = ({ options, setOptions }) => {
   const { data } = useQuery('user/applications');
+
   const jobTitles = data?.pages.map(({ job }) => {
     return {
       label: job.title,
-      value: job.id,
+      value: job._id,
     };
   });
 
@@ -84,7 +85,7 @@ const TableFilterToolbar = ({ options, setOptions }) => {
           multiSelect={false}
           options={jobTitles}
           selectedValues={options.jobId?.split(',') || []}
-          onFilterChange={(values) => handleFilterChange('jobId', values)}
+          onFilterChange={(value) => handleFilterChange('jobId', value)}
         />
       )}
 
