@@ -1,6 +1,7 @@
 import {
   selectIsLocalVideoEnabled,
   selectPeerAudioByID,
+  useAVToggle,
   useHMSStore,
   useVideo,
 } from '@100mslive/react-sdk';
@@ -13,8 +14,12 @@ const Peer = ({ peer }) => {
     trackId: peer.videoTrack,
   });
 
+  const { isLocalAudioEnabled } = useAVToggle();
   const isVideoEnabled = useHMSStore(selectIsLocalVideoEnabled);
   const isPeerVideoEnabled = peer.isLocal ? isVideoEnabled : Boolean(peer.videoTrack);
+
+  // Get audio enabled state - for local peer use isLocalAudioEnabled, for remote peer check audioTrack
+  const isAudioEnabled = peer.isLocal ? isLocalAudioEnabled : Boolean(peer.audioTrack);
 
   // Get avatar from peer metadata if available
   const avatar = null;
@@ -107,10 +112,10 @@ const Peer = ({ peer }) => {
             <div
               className={classnames(
                 'flex h-7 w-7 items-center justify-center rounded-full transition-colors',
-                peer.audioTrack ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                isAudioEnabled ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
               )}
             >
-              {peer.audioTrack ? (
+              {isAudioEnabled ? (
                 <Mic className="h-3.5 w-3.5" />
               ) : (
                 <MicOff className="h-3.5 w-3.5" />
