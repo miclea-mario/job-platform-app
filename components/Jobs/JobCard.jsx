@@ -3,7 +3,7 @@ import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
 import { useProfile } from '@hooks';
 import { toaster } from '@lib';
-import { Bookmark, Briefcase, Building2, GraduationCap, MapPin } from 'lucide-react';
+import { Briefcase, Building2, GraduationCap, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -93,9 +93,6 @@ const JobCard = ({ job }) => {
                   <span>{job.city}</span>
                 </div>
               </div>
-              <Button variant="ghost" size="icon" className="flex-shrink-0">
-                <Bookmark className="h-4 w-4" />
-              </Button>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 mt-4">
