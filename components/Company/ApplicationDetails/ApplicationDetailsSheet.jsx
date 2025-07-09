@@ -73,9 +73,7 @@ const ApplicationDetailsSheet = ({ application, isOpen, hide }) => {
               {/* Actions */}
 
               <div className="flex gap-2">
-                {![APPLICATION_STATUS.PENDING_INTERVIEW, APPLICATION_STATUS.INTERVIEWED].includes(
-                  application.status
-                ) && (
+                {APPLICATION_STATUS.PENDING === application.status && (
                   <Button
                     className="flex-1"
                     variant="default"
