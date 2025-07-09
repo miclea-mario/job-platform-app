@@ -86,6 +86,7 @@ const ApplicationDetailsSheet = ({ application, isOpen, hide }) => {
                   className="flex-1"
                   variant="default"
                   onClick={() => handleClick(APPLICATION_STATUS.ACCEPTED)}
+                  disabled={application.status === APPLICATION_STATUS.ACCEPTED}
                 >
                   Accept
                 </Button>
@@ -93,6 +94,7 @@ const ApplicationDetailsSheet = ({ application, isOpen, hide }) => {
                   className="flex-1"
                   variant="destructive"
                   onClick={() => handleClick(APPLICATION_STATUS.REJECTED)}
+                  disabled={application.status === APPLICATION_STATUS.REJECTED}
                 >
                   Reject
                 </Button>

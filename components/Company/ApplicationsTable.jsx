@@ -6,14 +6,26 @@ import { APPLICATION_STATUS, MATCH_SCORE_OPTIONS } from '@constants/application'
 import applicationColumns from '@data/company/application-columns';
 import { useDisclosure, useInfiniteQuery, useQuery } from '@hooks';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApplicationDetailsSheet from './ApplicationDetails/ApplicationDetailsSheet';
 
-const ApplicationsTable = () => {
+const ApplicationsTable = ({ selectedApplication: initialSelectedApplication }) => {
   const [options, setOptions] = useState({});
   const { data, status, ...props } = useInfiniteQuery('company/applications', options);
   const [selectedApplication, setSelectedApplication] = useState(null);
+  const [hasInitiallyOpened, setHasInitiallyOpened] = useState(false);
   const { isOpen, show, hide } = useDisclosure();
+
+  useEffect(() => {
+    if (initialSelectedApplication && !hasInitiallyOpened && data?.pages) {
+      const application = data.pages.flat().find((app) => app._id === initialSelectedApplication);
+      if (application) {
+        setSelectedApplication(application);
+        setHasInitiallyOpened(true);
+        show();
+      }
+    }
+  }, [initialSelectedApplication, data, hasInitiallyOpened]);
 
   const applicationColumnsWithDetails = [
     ...applicationColumns.slice(0, -1),
