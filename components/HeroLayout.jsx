@@ -1,5 +1,4 @@
 import { Header, Link } from '@components';
-import Spline from '@splinetool/react-spline';
 import { MapPin, SearchIcon } from 'lucide-react';
 import { Button } from './ui/button';
 
@@ -32,19 +31,13 @@ const Search = () => {
 
 const HeroLayout = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col cover">
       <Header className="absolute top-0 z-20 w-full">
         <Search />
       </Header>
 
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center">
-        {/* Spline Background */}
-        <div className="absolute inset-0 z-0">
-          <Spline scene="https://prod.spline.design/GhYd6r5P55Hy5yYv/scene.splinecode" />
-        </div>
-
-        {/* Hero Content */}
         <div className="relative z-10 px-4 max-w-4xl max">
           <h1 className="text-5xl font-light mb-4 text-white drop-shadow-lg">
             Your Career Horizon Awaits

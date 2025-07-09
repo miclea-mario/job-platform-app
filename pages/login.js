@@ -1,5 +1,4 @@
 import { LoginForm } from '@components/Forms';
-import Spline from '@splinetool/react-spline';
 
 const Page = () => {
   return (
@@ -16,9 +15,7 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <div className="relative hidden bg-muted lg:block">
-        <Spline scene="https://prod.spline.design/GhYd6r5P55Hy5yYv/scene.splinecode" />
-      </div>
+      <div className="relative hidden bg-muted lg:block cover"></div>
     </main>
   );
 };
