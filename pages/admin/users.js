@@ -1,15 +1,12 @@
 import { checkAuth, withAuth } from '@auth';
 import { DashboardLayout } from '@components';
 import { UsersTable } from '@components/Admin';
-import { useState } from 'react';
 
 const Page = () => {
-  const [options, setOptions] = useState({});
-
   return (
     <DashboardLayout title="Dashboard">
       <div className="prose max-w-full">
-        <UsersTable options={options} />
+        <UsersTable />
       </div>
     </DashboardLayout>
   );

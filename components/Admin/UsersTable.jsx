@@ -3,12 +3,12 @@ import { TableError, TableLoading, TableSuccess } from '@components/Tables';
 import usersColumns from '@data/admin/users-columns';
 import { useInfiniteQuery } from '@hooks';
 
-const UsersTable = ({ options }) => {
+const UsersTable = ({ options = {} }) => {
   const { data, status, ...props } = useInfiniteQuery('admin/users', options);
 
   return (
     <>
-      {status === 'loading' && <TableLoading columns={usersColumns.length} rows={5} />}
+      {status === 'loading' && <TableLoading columns={usersColumns} />}
       {status === 'error' && <TableError name="staff" columns={usersColumns} />}
       {status === 'success' && (
         <>

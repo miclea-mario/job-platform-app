@@ -1,3 +1,4 @@
+import UserActionsCell from '@components/Admin/UserActionsCell';
 import UserStatusCell from '@components/Admin/UserStatusCell';
 import { TableColumnHeader } from '@components/Tables';
 
@@ -20,6 +21,19 @@ const usersColumns = [
     cell: ({ row }) => <UserStatusCell value={row.original.active} />,
     enableSorting: true,
     enableHiding: true,
+  },
+  {
+    header: 'Actions',
+    id: 'actions',
+    cell: ({ row }) => (
+      <UserActionsCell
+        userId={row.original._id}
+        isActive={row.original.active}
+        currentUserRole={row.original.role}
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
   },
 ];
 
