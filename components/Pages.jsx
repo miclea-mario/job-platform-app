@@ -3,10 +3,7 @@ import { SidebarMenu } from '@components/ui/sidebar';
 import { useQuery } from '@hooks';
 
 const Pages = ({ role }) => {
-  let data = null;
-  if (role === 'company') {
-    data = useQuery('company/applications/count');
-  }
+  const { data: applicationsCount } = useQuery('company/applications/count');
 
   return (
     <>
@@ -23,7 +20,7 @@ const Pages = ({ role }) => {
             <>
               <MenuItem href="/company">Dashboard</MenuItem>
               <MenuItem href="/company/jobs">Jobs</MenuItem>
-              <MenuItem href="/company/applications" value={data?.toString()}>
+              <MenuItem href="/company/applications" value={applicationsCount?.toString()}>
                 Applications
               </MenuItem>
               <MenuItem href="/company/interviews">Interviews</MenuItem>

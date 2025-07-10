@@ -1,19 +1,490 @@
 import { checkAuth, withAuth } from '@auth';
 import { DashboardLayout } from '@components';
-
-const Page = () => {
-  return (
-    <DashboardLayout title="Dashboard">
-      <div className="prose max-w-full">
-        <h2 className="mb-4 font-semibold">Hello world</h2>
-        <p>This is a secured admin page. Modify it as you wish.</p>
-      </div>
-    </DashboardLayout>
-  );
-};
+import { Badge } from '@components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@components/ui/chart';
+import { Progress } from '@components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useQuery } from '@hooks';
+import {
+  Activity,
+  AlertTriangle,
+  BarChart as BarChartIcon,
+  Briefcase,
+  Building2,
+  Loader2,
+  PieChart as PieChartIcon,
+  Target,
+  TrendingUp,
+  UserCheck,
+  Users,
+} from 'lucide-react';
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 export async function getServerSideProps(context) {
   return await checkAuth(context);
 }
+
+const Page = () => {
+  // Fetch optimized dashboard statistics
+  const { data: dashboardData, isLoading } = useQuery('/admin/dashboard/stats', {
+    refetchInterval: 60000, // Refetch every minute
+  });
+
+  if (isLoading) {
+    return (
+      <DashboardLayout title="Admin Dashboard">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (!dashboardData) {
+    return (
+      <DashboardLayout title="Admin Dashboard">
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">Failed to load dashboard data</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  const { overview, userStats, recentActivity, growth, platformHealth, monthlyTrends } =
+    dashboardData;
+
+  // Prepare chart data
+  const usersByRole = [
+    { name: 'Job Seekers', value: userStats.jobSeekers, fill: 'var(--chart-1)' },
+    { name: 'Companies', value: userStats.companies, fill: 'var(--chart-2)' },
+    { name: 'Admins', value: userStats.admins, fill: 'var(--chart-3)' },
+  ].filter((item) => item.value > 0);
+
+  const jobsByStatus = [
+    { name: 'Active', value: overview.activeJobs, fill: 'var(--chart-1)' },
+    { name: 'Inactive', value: overview.inactiveJobs, fill: 'var(--chart-2)' },
+    { name: 'Expired', value: overview.expiredJobs, fill: 'var(--chart-3)' },
+  ].filter((item) => item.value > 0);
+
+  const chartConfig = {
+    users: {
+      label: 'New Users',
+      color: 'hsl(var(--chart-1))',
+    },
+    jobs: {
+      label: 'New Jobs',
+      color: 'hsl(var(--chart-2))',
+    },
+    applications: {
+      label: 'New Applications',
+      color: 'hsl(var(--chart-3))',
+    },
+  };
+
+  // Format growth rates for display
+  const formatGrowthRate = (rate) => {
+    if (rate === 0) return '0%';
+    return `${rate > 0 ? '+' : ''}${rate.toFixed(1)}%`;
+  };
+
+  return (
+    <DashboardLayout title="Admin Dashboard">
+      <div className="space-y-6">
+        {/* Key Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{overview.totalUsers}</div>
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">
+                  {overview.activeUsers} active, {overview.inactiveUsers} inactive
+                </p>
+                <Badge variant="secondary" className="text-xs">
+                  {formatGrowthRate(growth.userGrowthRate)}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Jobs</CardTitle>
+              <Briefcase className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{overview.totalJobs}</div>
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground">
+                  {overview.activeJobs} active, {overview.inactiveJobs} inactive
+                </p>
+                <Badge variant="secondary" className="text-xs">
+                  {formatGrowthRate(growth.jobGrowthRate)}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Companies</CardTitle>
+              <Building2 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">{userStats.companies}</div>
+              <p className="text-xs text-muted-foreground">
+                {overview.totalUsers > 0
+                  ? ((userStats.companies / overview.totalUsers) * 100).toFixed(1)
+                  : 0}
+                % of total users
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Recent Activity</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">{recentActivity.total}</div>
+              <p className="text-xs text-muted-foreground">
+                {recentActivity.users} users, {recentActivity.jobs} jobs,{' '}
+                {recentActivity.applications} applications
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Platform Health Indicators */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <UserCheck className="h-5 w-5 text-green-600" />
+                User Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Active Users</span>
+                <span className="font-medium">{platformHealth.userActivityRate.toFixed(1)}%</span>
+              </div>
+              <Progress value={platformHealth.userActivityRate} className="h-2" />
+              <div className="text-xs text-muted-foreground">
+                {overview.activeUsers} out of {overview.totalUsers} users are active
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-blue-600" />
+                Job Availability
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm">Active Jobs</span>
+                <span className="font-medium">{platformHealth.jobActivityRate.toFixed(1)}%</span>
+              </div>
+              <Progress value={platformHealth.jobActivityRate} className="h-2" />
+              <div className="text-xs text-muted-foreground">
+                {overview.activeJobs} out of {overview.totalJobs} jobs are active
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-orange-600" />
+                Attention Required
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center p-2 bg-red-50 rounded">
+                  <span className="text-sm">Inactive Users</span>
+                  <Badge variant="destructive">{overview.inactiveUsers}</Badge>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                  <span className="text-sm">Expired Jobs</span>
+                  <Badge variant="outline">{overview.expiredJobs}</Badge>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Charts and Analytics */}
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="users">User Analytics</TabsTrigger>
+            <TabsTrigger value="trends">Trends</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <PieChartIcon className="h-5 w-5" />
+                    Users by Role
+                  </CardTitle>
+                  <CardDescription>Distribution of user types on the platform</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                    <PieChart>
+                      <Pie
+                        data={usersByRole}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {usersByRole.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Pie>
+                      <ChartTooltip />
+                    </PieChart>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BarChartIcon className="h-5 w-5" />
+                    Jobs by Status
+                  </CardTitle>
+                  <CardDescription>Current status of all job postings</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
+                    <BarChart data={jobsByStatus}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="name" />
+                      <YAxis />
+                      <ChartTooltip />
+                      <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                        {jobsByStatus.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.fill} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="users" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-3">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Job Seekers</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-blue-600">{userStats.jobSeekers}</div>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Individual users looking for employment opportunities
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Companies</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-purple-600">{userStats.companies}</div>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Organizations posting job opportunities
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Administrators</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-orange-600">{userStats.admins}</div>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Platform administrators and moderators
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>User Status Overview</CardTitle>
+                <CardDescription>Account status distribution across all users</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Active Users</span>
+                      <span className="text-sm text-muted-foreground">{overview.activeUsers}</span>
+                    </div>
+                    <Progress value={platformHealth.userActivityRate} className="h-2" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium">Inactive Users</span>
+                      <span className="text-sm text-muted-foreground">
+                        {overview.inactiveUsers}
+                      </span>
+                    </div>
+                    <Progress value={100 - platformHealth.userActivityRate} className="h-2" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="trends" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  Growth Trends
+                </CardTitle>
+                <CardDescription>
+                  New users, jobs, and applications over the last 6 months
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
+                  <AreaChart data={monthlyTrends}>
+                    <defs>
+                      <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0.1} />
+                      </linearGradient>
+                      <linearGradient id="colorJobs" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0.1} />
+                      </linearGradient>
+                      <linearGradient id="colorApplications" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--chart-3)" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="var(--chart-3)" stopOpacity={0.1} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Area
+                      type="monotone"
+                      dataKey="users"
+                      stroke="var(--chart-1)"
+                      fillOpacity={1}
+                      fill="url(#colorUsers)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="jobs"
+                      stroke="var(--chart-2)"
+                      fillOpacity={1}
+                      fill="url(#colorJobs)"
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="applications"
+                      stroke="var(--chart-3)"
+                      fillOpacity={1}
+                      fill="url(#colorApplications)"
+                    />
+                  </AreaChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Platform Insights</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                    <div>
+                      <p className="font-medium">User-to-Company Ratio</p>
+                      <p className="text-sm text-muted-foreground">Job seekers per company</p>
+                    </div>
+                    <div className="text-xl font-bold text-blue-600">
+                      {platformHealth.userToCompanyRatio}:1
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                    <div>
+                      <p className="font-medium">Jobs per Company</p>
+                      <p className="text-sm text-muted-foreground">Average job postings</p>
+                    </div>
+                    <div className="text-xl font-bold text-green-600">
+                      {platformHealth.jobsPerCompany}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Activity Summary</CardTitle>
+                  <CardDescription>Last 30 days</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">New Users</span>
+                    <Badge variant="outline">{recentActivity.users}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">New Jobs</span>
+                    <Badge variant="outline">{recentActivity.jobs}</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">New Applications</span>
+                    <Badge variant="outline">{recentActivity.applications}</Badge>
+                  </div>
+                  <div className="pt-2 border-t">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">Total Activity</span>
+                      <Badge variant="secondary">{recentActivity.total}</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
+  );
+};
 
 export default withAuth(Page);

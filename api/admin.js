@@ -1,5 +1,9 @@
 import { axiosAuth } from '@lib';
 
+export const getDashboardStats = () => {
+  return axiosAuth.get('/admin/dashboard/stats');
+};
+
 export const changePassword = (data) => {
   return axiosAuth.post('/admin/change-password', data);
 };
