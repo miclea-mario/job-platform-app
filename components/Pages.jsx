@@ -15,6 +15,7 @@ const Pages = ({ role }) => {
           {role === 'admin' && (
             <>
               <MenuItem href="/admin/users">Manage Users</MenuItem>
+              <MenuItem href="/admin/jobs">Manage Jobs</MenuItem>
               <MenuItem href="/admin">Dashboard</MenuItem>
             </>
           )}

@@ -7,3 +7,7 @@ export const changePassword = (data) => {
 export const toggleUserStatus = (userId) => {
   return axiosAuth.patch(`/admin/users/${userId}/toggle-status`);
 };
+
+export const toggleJobStatus = (jobId) => {
+  return axiosAuth.patch(`/admin/jobs/${jobId}/toggle-status`);
+};
