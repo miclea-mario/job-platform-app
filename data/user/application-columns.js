@@ -5,8 +5,10 @@ import { CircularProgress } from '@components/TableCells';
 import { TableColumnHeader } from '@components/Tables';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
+import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { formatDate } from '@functions';
+import { Video } from 'lucide-react';
 
 const applicationColumns = [
   {
@@ -87,8 +89,39 @@ const applicationColumns = [
       const date = row.original.interview?.date;
       const time = row.original.interview?.time;
 
-      return <p>{date ? `${formatDate(date)} - ${time}` : '-'}</p>;
+      return <p>{date ? `${formatDate(date)} ${time}` : '-'}</p>;
     },
+  },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: ({ row }) => {
+      const application = row.original;
+      const hasInterview = application.interview?.date;
+
+      if (!hasInterview) {
+        return <span className="text-muted-foreground text-sm">No interview scheduled</span>;
+      }
+
+      const interviewDate = new Date(application.interview.date);
+      const now = new Date();
+      const isInterviewTime = interviewDate <= now;
+
+      return (
+        <Link href={`/interview/${application._id}`} target="_blank" rel="noopener noreferrer">
+          <Button
+            size="sm"
+            variant={isInterviewTime ? 'default' : 'outline'}
+            disabled={!isInterviewTime}
+            className="flex items-center gap-2"
+          >
+            <Video className="h-4 w-4" />
+            {isInterviewTime ? 'Join Interview' : 'Not Yet Available'}
+          </Button>
+        </Link>
+      );
+    },
+    enableSorting: false,
   },
 ];
 
