@@ -13,7 +13,12 @@ const Page = () => {
     <Layout>
       {status === 'loading' && <Loading />}
       {status === 'success' && (
-        <InterviewRoom token={data.token} user={data.user} applicationId={applicationId} />
+        <InterviewRoom
+          token={data.token}
+          user={data.user}
+          applicationId={applicationId}
+          room={data.room}
+        />
       )}
     </Layout>
   );
