@@ -67,29 +67,29 @@ const Page = () => {
 
   // Prepare chart data
   const usersByRole = [
-    { name: 'Job Seekers', value: userStats.jobSeekers, fill: 'var(--chart-1)' },
-    { name: 'Companies', value: userStats.companies, fill: 'var(--chart-2)' },
-    { name: 'Admins', value: userStats.admins, fill: 'var(--chart-3)' },
+    { name: 'Job Seekers', value: userStats.jobSeekers, fill: '#3b82f6' },
+    { name: 'Companies', value: userStats.companies, fill: '#8b5cf6' },
+    { name: 'Admins', value: userStats.admins, fill: '#f59e0b' },
   ].filter((item) => item.value > 0);
 
   const jobsByStatus = [
-    { name: 'Active', value: overview.activeJobs, fill: 'var(--chart-1)' },
-    { name: 'Inactive', value: overview.inactiveJobs, fill: 'var(--chart-2)' },
-    { name: 'Expired', value: overview.expiredJobs, fill: 'var(--chart-3)' },
+    { name: 'Active', value: overview.activeJobs, fill: '#10b981' },
+    { name: 'Inactive', value: overview.inactiveJobs, fill: '#f59e0b' },
+    { name: 'Expired', value: overview.expiredJobs, fill: '#ef4444' },
   ].filter((item) => item.value > 0);
 
   const chartConfig = {
     users: {
       label: 'New Users',
-      color: 'hsl(var(--chart-1))',
+      color: '#3b82f6',
     },
     jobs: {
       label: 'New Jobs',
-      color: 'hsl(var(--chart-2))',
+      color: '#8b5cf6',
     },
     applications: {
       label: 'New Applications',
-      color: 'hsl(var(--chart-3))',
+      color: '#f59e0b',
     },
   };
 
@@ -244,7 +244,7 @@ const Page = () => {
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
-                <CardHeader>
+                <CardHeader className="flex-col">
                   <CardTitle className="flex items-center gap-2">
                     <PieChartIcon className="h-5 w-5" />
                     Users by Role
@@ -274,7 +274,7 @@ const Page = () => {
               </Card>
 
               <Card>
-                <CardHeader>
+                <CardHeader className="flex-col">
                   <CardTitle className="flex items-center gap-2">
                     <BarChartIcon className="h-5 w-5" />
                     Jobs by Status
@@ -340,7 +340,7 @@ const Page = () => {
             </div>
 
             <Card>
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle>User Status Overview</CardTitle>
                 <CardDescription>Account status distribution across all users</CardDescription>
               </CardHeader>
@@ -369,7 +369,7 @@ const Page = () => {
 
           <TabsContent value="trends" className="space-y-4">
             <Card>
-              <CardHeader>
+              <CardHeader className="flex-col">
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
                   Growth Trends
