@@ -106,13 +106,6 @@ const jobColumns = [
               >
                 Edit Job
               </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() =>
-                  (window.location.href = `/company/jobs/${row.original._id}/applications`)
-                }
-              >
-                View Applications
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-destructive" onSelect={(e) => e.preventDefault()}>
                 <AreYouSure
