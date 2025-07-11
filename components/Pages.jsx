@@ -5,7 +5,7 @@ const Pages = ({ role }) => {
   return (
     <>
       <SidebarMenu>
-        <MenuGroup label="App">
+        <MenuGroup label="HorizonHire Dashboard">
           {role === 'admin' && (
             <>
               <MenuItem href="/admin/users">Manage Users</MenuItem>
