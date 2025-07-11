@@ -10,9 +10,32 @@ import { UserRound } from 'lucide-react';
 const ProfileMenu = ({ me }) => {
   const role = me?.role;
 
+  if (!role) {
+    <DropdownMenuContent align="end">
+      <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/login')}>
+        Login
+      </DropdownMenuItem>
+      <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/signup')}>
+        Signup
+      </DropdownMenuItem>
+    </DropdownMenuContent>;
+  }
+
   return (
     <DropdownMenuContent align="end">
-      {role && (
+      {role === 'admin' && (
+        <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/admin')}>
+          Dashboard
+        </DropdownMenuItem>
+      )}
+
+      {role === 'company' && (
+        <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/company')}>
+          Dashboard
+        </DropdownMenuItem>
+      )}
+
+      {role != 'admin' && (
         <>
           <DropdownMenuItem
             className="cursor-pointer flex items-center justify-between gap-2"
@@ -23,20 +46,10 @@ const ProfileMenu = ({ me }) => {
           <DropdownMenuSeparator />
         </>
       )}
-      {me ? (
-        <DropdownMenuItem className="cursor-pointer" onSelect={logout}>
-          Logout
-        </DropdownMenuItem>
-      ) : (
-        <>
-          <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/login')}>
-            Login
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/signup')}>
-            Signup
-          </DropdownMenuItem>
-        </>
-      )}
+
+      <DropdownMenuItem className="cursor-pointer" onSelect={logout}>
+        Logout
+      </DropdownMenuItem>
     </DropdownMenuContent>
   );
 };
