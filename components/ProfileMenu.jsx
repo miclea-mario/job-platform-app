@@ -11,14 +11,16 @@ const ProfileMenu = ({ me }) => {
   const role = me?.role;
 
   if (!role) {
-    <DropdownMenuContent align="end">
-      <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/login')}>
-        Login
-      </DropdownMenuItem>
-      <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/signup')}>
-        Signup
-      </DropdownMenuItem>
-    </DropdownMenuContent>;
+    return (
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/login')}>
+          Login
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer" onSelect={() => router.push('/signup')}>
+          Signup
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    );
   }
 
   return (
