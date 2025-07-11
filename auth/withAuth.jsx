@@ -16,7 +16,7 @@ const verifyAndRefreshToken = async () => {
   try {
     return await refreshToken();
   } catch (error) {
-    throw new Error('Failed to refresh token');
+    console.error('Token refresh failed:', error);
   }
 };
 
