@@ -20,7 +20,6 @@ const HeroLayout = ({ children }) => {
             <Button asChild>
               <Link href="/jobs">Browse Jobs</Link>
             </Button>
-            <Button variant="secondary">For Employers</Button>
           </div>
         </div>
       </div>
