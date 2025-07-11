@@ -138,16 +138,6 @@ const Peer = ({ peer }) => {
           </div>
         </div>
       </div>
-
-      {/* Connection quality indicator */}
-      <div className="absolute top-3 right-3 z-20">
-        <div className="flex items-center gap-1 rounded-full bg-black/40 px-2 py-1 backdrop-blur-sm">
-          <div className="h-1.5 w-1.5 rounded-full bg-green-400"></div>
-          <div className="h-1.5 w-1.5 rounded-full bg-green-400"></div>
-          <div className="h-1.5 w-1.5 rounded-full bg-green-300"></div>
-          <div className="h-1.5 w-1.5 rounded-full bg-gray-400"></div>
-        </div>
-      </div>
     </div>
   );
 };

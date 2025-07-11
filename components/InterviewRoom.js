@@ -23,13 +23,15 @@ const Conference = () => {
           <p className="text-gray-500 dark:text-gray-400">Waiting for participants...</p>
         </div>
       ) : (
-        <div className={classnames(
-          "grid gap-4",
-          peers.length === 1 && "grid-cols-1",
-          peers.length === 2 && "grid-cols-2",
-          peers.length > 2 && peers.length <= 4 && "grid-cols-2",
-          peers.length > 4 && "grid-cols-3"
-        )}>
+        <div
+          className={classnames(
+            'grid gap-4',
+            peers.length === 1 && 'grid-cols-1',
+            peers.length === 2 && 'grid-cols-2',
+            peers.length > 2 && peers.length <= 4 && 'grid-cols-2',
+            peers.length > 4 && 'grid-cols-3'
+          )}
+        >
           {peers.map((peer) => (
             <div key={peer.id} className="aspect-video">
               <Peer peer={peer} />
@@ -51,9 +53,8 @@ const Footer = () => {
     setIsLeaving(true);
     try {
       await hmsActions.leave();
-      // You could redirect here if needed
     } catch (error) {
-      console.error("Error leaving room:", error);
+      console.error('Error leaving room:', error);
     } finally {
       setIsLeaving(false);
     }
@@ -92,9 +93,9 @@ const Footer = () => {
           onClick={handleLeave}
           disabled={isLeaving}
           className={classnames(
-            "flex h-12 px-4 items-center justify-center rounded-full transition-all duration-200 gap-2",
-            "bg-red-500 text-white hover:bg-red-600 shadow-md",
-            isLeaving && "opacity-70 cursor-not-allowed"
+            'flex h-12 px-4 items-center justify-center rounded-full transition-all duration-200 gap-2',
+            'bg-red-500 text-white hover:bg-red-600 shadow-md',
+            isLeaving && 'opacity-70 cursor-not-allowed'
           )}
           title="Leave interview"
         >
@@ -208,21 +209,32 @@ const InterviewContent = ({ token, user }) => {
                   />
                 </svg>
               </div>
-              
+
               <h3 className="mb-3 text-center text-xl font-semibold text-gray-900 dark:text-white">
                 Connection Error
               </h3>
-              
+
               <p className="mb-6 text-center text-gray-600 dark:text-gray-400">
-                {error || 'Could not connect to the interview room. Please check your connection and try again.'}
+                {error ||
+                  'Could not connect to the interview room. Please check your connection and try again.'}
               </p>
-              
+
               <div className="flex justify-center">
                 <Button
                   onClick={() => window.location.reload()}
                   className="flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
                     <path d="M21 3v5h-5"></path>
                     <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
