@@ -1,60 +1,14 @@
 import { Badge } from '@components/ui/badge';
-import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { useProfile } from '@hooks';
-import { toaster } from '@lib';
 import { Briefcase, Building2, GraduationCap, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import JobDetailsModal from './JobDetailsModal';
 
 const JobCard = ({ job }) => {
-  const { status, me } = useProfile();
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleApplyClick = () => {
-    if (status === 'success' && me) {
-      setIsModalOpen(true);
-    } else {
-      toaster.error('Please login to apply for this job');
-      router.push('/login');
-    }
-  };
-
   const postedDate = new Date(job.createdAt);
   const now = new Date();
   const diffTime = Math.abs(now - postedDate);
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-  // Mock AI match data - in a real app this would come from an API
-  const aiMatch = {
-    score: 85,
-    criteria: [
-      {
-        name: 'Experience Level',
-        description: 'Your experience matches the required level',
-        matched: true,
-      },
-      {
-        name: 'Skills Match',
-        description: 'You have 8 out of 10 required skills',
-        matched: true,
-      },
-      {
-        name: 'Location',
-        description: "You're in the same city as the job",
-        matched: true,
-      },
-      {
-        name: 'Education',
-        description: 'Your education level meets the requirements',
-        matched: false,
-      },
-    ],
-  };
 
   return (
     <>
@@ -121,18 +75,14 @@ const JobCard = ({ job }) => {
           </div>
 
           {/* Action Button */}
-          <Button className="flex-shrink-0" onClick={handleApplyClick}>
+          <Link
+            className="flex-shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 px-2 rounded-md py-2 text-sm"
+            href={`/jobs/${job._id}`}
+          >
             Apply Now
-          </Button>
+          </Link>
         </div>
       </Card>
-
-      <JobDetailsModal
-        job={job}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        aiMatch={aiMatch}
-      />
     </>
   );
 };
