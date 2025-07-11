@@ -2,7 +2,7 @@ import { checkAuth, withAuth } from '@auth';
 import { DashboardLayout } from '@components';
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@components/ui/chart';
+import { ChartContainer, ChartTooltip } from '@components/ui/chart';
 import { Progress } from '@components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useQuery } from '@hooks';
@@ -15,22 +15,10 @@ import {
   Loader2,
   PieChart as PieChartIcon,
   Target,
-  TrendingUp,
   UserCheck,
   Users,
 } from 'lucide-react';
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, XAxis, YAxis } from 'recharts';
 
 export async function getServerSideProps(context) {
   return await checkAuth(context);
@@ -62,8 +50,7 @@ const Page = () => {
     );
   }
 
-  const { overview, userStats, recentActivity, growth, platformHealth, monthlyTrends } =
-    dashboardData;
+  const { overview, userStats, recentActivity, growth, platformHealth } = dashboardData;
 
   // Prepare chart data
   const usersByRole = [
@@ -235,10 +222,9 @@ const Page = () => {
 
         {/* Charts and Analytics */}
         <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="users">User Analytics</TabsTrigger>
-            <TabsTrigger value="trends">Trends</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -365,121 +351,6 @@ const Page = () => {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-
-          <TabsContent value="trends" className="space-y-4">
-            <Card>
-              <CardHeader className="flex-col">
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Growth Trends
-                </CardTitle>
-                <CardDescription>
-                  New users, jobs, and applications over the last 6 months
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-                  <AreaChart data={monthlyTrends}>
-                    <defs>
-                      <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--chart-1)" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="var(--chart-1)" stopOpacity={0.1} />
-                      </linearGradient>
-                      <linearGradient id="colorJobs" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--chart-2)" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="var(--chart-2)" stopOpacity={0.1} />
-                      </linearGradient>
-                      <linearGradient id="colorApplications" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="var(--chart-3)" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="var(--chart-3)" stopOpacity={0.1} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Area
-                      type="monotone"
-                      dataKey="users"
-                      stroke="var(--chart-1)"
-                      fillOpacity={1}
-                      fill="url(#colorUsers)"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="jobs"
-                      stroke="var(--chart-2)"
-                      fillOpacity={1}
-                      fill="url(#colorJobs)"
-                    />
-                    <Area
-                      type="monotone"
-                      dataKey="applications"
-                      stroke="var(--chart-3)"
-                      fillOpacity={1}
-                      fill="url(#colorApplications)"
-                    />
-                  </AreaChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Platform Insights</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">User-to-Company Ratio</p>
-                      <p className="text-sm text-muted-foreground">Job seekers per company</p>
-                    </div>
-                    <div className="text-xl font-bold text-blue-600">
-                      {platformHealth.userToCompanyRatio}:1
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">Jobs per Company</p>
-                      <p className="text-sm text-muted-foreground">Average job postings</p>
-                    </div>
-                    <div className="text-xl font-bold text-green-600">
-                      {platformHealth.jobsPerCompany}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Activity Summary</CardTitle>
-                  <CardDescription>Last 30 days</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">New Users</span>
-                    <Badge variant="outline">{recentActivity.users}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">New Jobs</span>
-                    <Badge variant="outline">{recentActivity.jobs}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">New Applications</span>
-                    <Badge variant="outline">{recentActivity.applications}</Badge>
-                  </div>
-                  <div className="pt-2 border-t">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">Total Activity</span>
-                      <Badge variant="secondary">{recentActivity.total}</Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </TabsContent>
         </Tabs>
       </div>
