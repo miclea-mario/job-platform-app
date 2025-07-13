@@ -15,13 +15,13 @@ const JobsOverviewChart = ({ jobs = [] }) => {
       {
         name: 'Active Jobs',
         value: activeJobs,
-        fill: 'var(--chart-1)',
+        fill: '#10b981',
         percentage: jobs.length > 0 ? Math.round((activeJobs / jobs.length) * 100) : 0,
       },
       {
         name: 'Inactive Jobs',
         value: inactiveJobs,
-        fill: 'var(--chart-2)',
+        fill: '#f59e0b',
         percentage: jobs.length > 0 ? Math.round((inactiveJobs / jobs.length) * 100) : 0,
       },
     ].filter((item) => item.value > 0);
@@ -36,11 +36,12 @@ const JobsOverviewChart = ({ jobs = [] }) => {
     }, {});
 
     const colors = [
-      'var(--chart-1)',
-      'var(--chart-2)',
-      'var(--chart-3)',
-      'var(--chart-4)',
-      'var(--chart-5)',
+      '#3b82f6', // Blue
+      '#ef4444', // Red
+      '#8b5cf6', // Purple
+      '#f59e0b', // Amber
+      '#10b981', // Emerald
+      '#ec4899', // Pink
     ];
 
     return Object.entries(categories).map(([category, count], index) => ({
@@ -53,11 +54,11 @@ const JobsOverviewChart = ({ jobs = [] }) => {
   const chartConfig = {
     active: {
       label: 'Active Jobs',
-      color: 'hsl(var(--chart-1))',
+      color: '#10b981', // Emerald green
     },
     inactive: {
       label: 'Inactive Jobs',
-      color: 'hsl(var(--chart-2))',
+      color: '#f59e0b', // Amber
     },
   };
 

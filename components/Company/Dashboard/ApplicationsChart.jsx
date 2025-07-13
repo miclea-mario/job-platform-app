@@ -14,14 +14,14 @@ const ApplicationsChart = ({ applications = [], chartData = [] }) => {
     }, {});
 
     return [
-      { status: 'Pending', count: statusCounts['Pending'] || 0, fill: 'var(--chart-1)' },
-      { status: 'Accepted', count: statusCounts['Accepted'] || 0, fill: 'var(--chart-2)' },
-      { status: 'Rejected', count: statusCounts['Rejected'] || 0, fill: 'var(--chart-3)' },
-      { status: 'Interviewed', count: statusCounts['Interviewed'] || 0, fill: 'var(--chart-4)' },
+      { status: 'Pending', count: statusCounts['Pending'] || 0, fill: '#f59e0b' }, // Amber
+      { status: 'Accepted', count: statusCounts['Accepted'] || 0, fill: '#10b981' }, // Green
+      { status: 'Rejected', count: statusCounts['Rejected'] || 0, fill: '#ef4444' }, // Red
+      { status: 'Interviewed', count: statusCounts['Interviewed'] || 0, fill: '#8b5cf6' }, // Purple
       {
         status: 'Pending Interview',
         count: statusCounts['Pending Interview'] || 0,
-        fill: 'var(--chart-5)',
+        fill: '#3b82f6', // Blue
       },
     ].filter((item) => item.count > 0);
   };
@@ -67,27 +67,27 @@ const ApplicationsChart = ({ applications = [], chartData = [] }) => {
   const chartConfig = {
     pending: {
       label: 'Pending',
-      color: 'hsl(var(--chart-1))',
+      color: '#f59e0b', // Amber
     },
     reviewed: {
       label: 'Reviewed',
-      color: 'hsl(var(--chart-2))',
+      color: '#10b981', // Green
     },
     interview: {
       label: 'Interview',
-      color: 'hsl(var(--chart-3))',
+      color: '#8b5cf6', // Purple (matches Interviews card)
     },
     hired: {
       label: 'Hired',
-      color: 'hsl(var(--chart-4))',
+      color: '#10b981', // Green (matches Applications card)
     },
     rejected: {
       label: 'Rejected',
-      color: 'hsl(var(--chart-5))',
+      color: '#ef4444', // Red
     },
     applications: {
       label: 'Applications',
-      color: 'hsl(var(--chart-1))',
+      color: '#10b981', // Green (matches Applications card)
     },
   };
 
@@ -112,7 +112,7 @@ const ApplicationsChart = ({ applications = [], chartData = [] }) => {
               <XAxis dataKey="status" tickLine={false} axisLine={false} className="text-xs" />
               <YAxis tickLine={false} axisLine={false} className="text-xs" />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="count" radius={[4, 4, 0, 0]} fill="var(--chart-1)" />
+              <Bar dataKey="count" radius={[4, 4, 0, 0]} fill="#10b981" />
             </BarChart>
           </ChartContainer>
         </CardContent>
@@ -134,7 +134,7 @@ const ApplicationsChart = ({ applications = [], chartData = [] }) => {
               <XAxis dataKey="month" tickLine={false} axisLine={false} className="text-xs" />
               <YAxis tickLine={false} axisLine={false} className="text-xs" />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="applications" radius={[4, 4, 0, 0]} fill="var(--chart-2)" />
+              <Bar dataKey="applications" radius={[4, 4, 0, 0]} fill="#10b981" />
             </BarChart>
           </ChartContainer>
         </CardContent>
