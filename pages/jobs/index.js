@@ -6,11 +6,13 @@ const Page = () => {
   return (
     <JobsFiltersProvider>
       <JobSearchLayout>
-        <div className="max grid grid-cols-5 gap-5">
-          <div>
+        <div className="max grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-5">
+          <div className="lg:col-span-1">
             <JobFilters />
           </div>
-          <JobsList extraClass="col-span-4" />
+          <div className="lg:col-span-4">
+            <JobsList />
+          </div>
         </div>
       </JobSearchLayout>
     </JobsFiltersProvider>
