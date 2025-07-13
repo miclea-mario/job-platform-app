@@ -111,8 +111,8 @@ const Profile = ({
         onUpdate={(data) => updateProfileSection('title', data)}
       />
 
-      <div className="grid grid-cols-4 gap-4 mt-4">
-        <div className="col-span-3 flex flex-col gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mt-4">
+        <div className="lg:col-span-3 flex flex-col gap-4">
           <AboutSection bio={bio} onUpdate={(data) => updateProfileSection('bio', data)} />
 
           <ExperienceSection
@@ -126,7 +126,7 @@ const Profile = ({
           />
         </div>
 
-        <div className="flex flex-col gap-4 col-span-1">
+        <div className="flex flex-col gap-4 lg:col-span-1">
           <ContactSection
             phone={phone}
             email={email}
