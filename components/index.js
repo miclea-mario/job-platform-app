@@ -12,7 +12,6 @@ export { default as Header } from './Header';
 export { default as HeroLayout } from './HeroLayout';
 export { default as Link } from './Link';
 export { default as Loading } from './Loading';
-export { default as Logo } from './Logo';
 export { default as MenuButton } from './MenuButton';
 export { default as MenuGroup } from './MenuGroup';
 export { default as MenuItem } from './MenuItem';
