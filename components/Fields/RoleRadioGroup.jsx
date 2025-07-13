@@ -11,14 +11,14 @@ const RoleRadioGroup = ({ ...props }) => {
       defaultValue="1"
       {...props}
     >
-      <div className="relative flex flex-col gap-4 rounded-lg border border-input p-4 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring">
+      <div className="relative flex flex-col gap-4 rounded-lg border-2 border-input bg-white p-4 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring">
         <div className="flex justify-between gap-2">
           <RadioGroupItem id="user" value="user" className="order-1 after:absolute after:inset-0" />
           <User className="opacity-60" size={16} strokeWidth={2} aria-hidden="true" />
         </div>
         <Label htmlFor="user">Jobseeker</Label>
       </div>
-      <div className="relative flex flex-col gap-4 rounded-lg border border-input p-4 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring">
+      <div className="relative flex flex-col gap-4 rounded-lg border-2 border-input bg-white p-4 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring">
         <div className="flex justify-between gap-2">
           <RadioGroupItem
             id="company"

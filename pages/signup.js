@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 
 const Page = () => {
   return (
-    <div className="relative h-screen flex items-center cover">
+    <div className="relative h-screen flex items-center cover flex-col justify-center">
       <h1 className="pointer-events-none font-heading font-semibold text-white lg:text-3xl">
         HorizonHire
       </h1>
