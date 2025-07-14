@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@components/ui/dialog';
+import { INTERVIEW_REPORT_STATUS } from '@constants/interview';
 import { formatDate } from '@functions';
 import { AlertTriangle, Calendar, FileText, Star, TrendingUp, User, Video } from 'lucide-react';
 
@@ -78,6 +79,28 @@ const InterviewDetailsModal = ({ application, isOpen, onClose }) => {
                 <p className="text-xs text-amber-600">Time</p>
                 <p className="text-sm font-medium text-amber-900">{interview?.time}</p>
               </div>
+            </div>
+          </div>
+
+          {/* Interview Report Status */}
+          <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="flex items-center gap-2 mb-2">
+              <FileText className="h-4 w-4 text-gray-700" />
+              <span className="text-sm font-medium text-gray-700">Report Status</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {interview?.reportStatus === INTERVIEW_REPORT_STATUS.GENERATED && (
+                <Badge className="bg-green-100 text-green-800 text-xs">Report Available</Badge>
+              )}
+              {interview?.reportStatus === INTERVIEW_REPORT_STATUS.PENDING && (
+                <Badge className="bg-yellow-100 text-yellow-800 text-xs">Report Pending</Badge>
+              )}
+              {interview?.reportStatus === INTERVIEW_REPORT_STATUS.FAILED && (
+                <Badge className="bg-red-100 text-red-800 text-xs">Report Failed</Badge>
+              )}
+              {!interview?.reportStatus && (
+                <Badge className="bg-gray-100 text-gray-800 text-xs">No Report</Badge>
+              )}
             </div>
           </div>
 
