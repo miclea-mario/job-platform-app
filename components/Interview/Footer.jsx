@@ -5,13 +5,14 @@ import { APPLICATION_STATUS } from '@constants/application';
 import { useMutation } from '@hooks';
 import { classnames } from '@lib';
 import { Camera, CameraOff, Mic, MicOff, PhoneOff, Users } from 'lucide-react';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const Footer = ({ applicationId }) => {
   const { isLocalAudioEnabled, isLocalVideoEnabled, toggleAudio, toggleVideo } = useAVToggle();
   const hmsActions = useHMSActions();
   const [isLeaving, setIsLeaving] = useState(false);
-  const [isEndingRoom, setIsEndingRoom] = useState(false);
+  const router = useRouter();
 
   // Get permissions from HMS store
   const permissions = useHMSStore(selectPermissions);
@@ -25,7 +26,6 @@ const Footer = ({ applicationId }) => {
     setIsLeaving(true);
     try {
       await hmsActions.leave();
-      // You could redirect here if needed
     } catch (error) {
       console.error('Error leaving room:', error);
     } finally {
@@ -40,7 +40,6 @@ const Footer = ({ applicationId }) => {
       return;
     }
 
-    setIsEndingRoom(true);
     try {
       const lock = true;
       const reason = 'The interview has ended';
@@ -52,17 +51,16 @@ const Footer = ({ applicationId }) => {
       });
 
       await hmsActions.endRoom(lock, reason);
+      router.push('/company/applications');
     } catch (error) {
       console.error('Error ending room:', error);
-    } finally {
-      setIsEndingRoom(false);
     }
   };
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white/95 via-white/90 to-white/80 backdrop-blur-xl p-6 border-t border-gray-200/50 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] dark:from-gray-900/95 dark:via-gray-900/90 dark:to-gray-900/80 dark:border-gray-800/50 transition-all duration-300 z-50">
       <div className="mx-auto flex max-w-5xl items-center justify-center">
-        {/* Controls Container with Glass Effect */}
+        {/* Controls Container */}
         <div className="flex items-center gap-3 p-3 bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-full border border-gray-200/30 dark:border-gray-700/30 shadow-lg">
           {/* Audio Toggle */}
           <Button
@@ -150,25 +148,16 @@ const Footer = ({ applicationId }) => {
 
               <Button
                 onClick={handleEndRoom}
-                disabled={isEndingRoom}
                 className={classnames(
                   'group relative flex h-14 px-6 items-center justify-center rounded-full transition-all duration-300 gap-3 min-w-[160px] transform hover:scale-105',
-                  'bg-gradient-to-br from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 shadow-lg hover:shadow-amber-500/25',
-                  isEndingRoom && 'opacity-70 cursor-not-allowed scale-100 hover:scale-100'
+                  'bg-gradient-to-br from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 shadow-lg hover:shadow-amber-500/25'
                 )}
                 title="End interview for all participants"
               >
                 <div className="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div
-                  className={classnames(
-                    'flex items-center gap-3 relative z-10',
-                    isEndingRoom && 'animate-pulse'
-                  )}
-                >
-                  <Users size={20} className={isEndingRoom ? 'animate-bounce' : ''} />
-                  <span className="font-semibold text-sm">
-                    {isEndingRoom ? 'Ending...' : 'End Interview'}
-                  </span>
+                <div className="flex items-center gap-3 relative z-10">
+                  <Users size={20} />
+                  <span className="font-semibold text-sm">End Interview</span>
                 </div>
               </Button>
             </>
