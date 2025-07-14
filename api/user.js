@@ -14,6 +14,10 @@ export const updateResume = async (resumeFile) => {
   });
 };
 
+export const extractProfileFromResume = async () => {
+  return axiosAuth.post('/user/extract-profile-from-resume');
+};
+
 export const applyJob = async (jobId) => {
   return axiosAuth.post(`/user/apply/${jobId}`);
 };

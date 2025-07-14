@@ -1,4 +1,4 @@
-import { updateResume } from '@api/user';
+import { extractProfileFromResume, updateResume } from '@api/user';
 import FileUpload from '@components/Fields/FileUpload';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
@@ -6,26 +6,47 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@components/u
 import { formatDate } from '@functions';
 import { useMutation } from '@hooks';
 import { toaster } from '@lib';
-import { CheckCircle, Download, Edit, FileText, Upload, XCircle } from 'lucide-react';
+import { Bot, CheckCircle, Download, Edit, FileText, Sparkles, Upload, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const ResumeSection = ({ resume, onUpdate }) => {
+const ResumeSection = ({ resume, onUpdate, onProfileUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const form = useForm({
     defaultValues: {
       file: null,
     },
-  });
-
-  const updateResumeMutation = useMutation(updateResume, {
+  }); const updateResumeMutation = useMutation(updateResume, {
     onSuccess: (response) => {
-      onUpdate(response.data.resume);
+      const { data, aiExtracted, extractedFields = [], aiExtractionError } = response.data || {};
+      if (data && data.resume) {
+        onUpdate(data.resume);
+      }
       setIsEditing(false);
-      toaster.success('Resume updated successfully');
+
+      if (aiExtracted && extractedFields && extractedFields.length > 0) {
+        toaster.success(
+          `Resume updated successfully! AI extracted profile data: ${extractedFields.join(', ')}`
+        );
+        // Trigger profile refresh if we have a callback
+        if (onProfileUpdate) {
+          onProfileUpdate();
+        }
+      } else if (aiExtractionError) {
+        toaster.success('Resume updated successfully');
+        toaster.warning(`AI extraction failed: ${aiExtractionError}. You can try manual extraction later.`);
+      } else {
+        toaster.success('Resume updated successfully');
+      }
     },
     onError: (error) => {
       toaster.error(error.message || 'Failed to update resume');
+    },
+  });
+
+  const extractProfileMutation = useMutation(extractProfileFromResume, {
+    onError: (error) => {
+      toaster.error(error.message || 'Failed to extract profile data');
     },
   });
 
@@ -47,6 +68,14 @@ const ResumeSection = ({ resume, onUpdate }) => {
       file: null,
     });
     setIsEditing(false);
+  };
+
+  const handleExtractProfile = async () => {
+    try {
+      await extractProfileMutation.mutateAsync();
+    } catch (error) {
+      console.error('Failed to extract profile:', error);
+    }
   };
 
   return (
@@ -79,6 +108,18 @@ const ResumeSection = ({ resume, onUpdate }) => {
                   </FormItem>
                 )}
               />
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div className="flex items-start gap-2">
+                  <Sparkles className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm">
+                    <p className="font-medium text-blue-900">AI Profile Extraction</p>
+                    <p className="text-blue-700">
+                      When you upload your resume, AI will automatically extract and populate your profile data including skills, experience, and education.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
               <div className="flex justify-end gap-2 mt-4">
                 <Button type="button" size="sm" variant="outline" onClick={handleCancel}>
@@ -114,6 +155,27 @@ const ResumeSection = ({ resume, onUpdate }) => {
                   <p className="text-xs text-muted-foreground">
                     Last updated: {formatDate(resume.updatedAt, 'MMM d, yyyy')}
                   </p>
+                )}
+
+                {resume.extractedText && (
+                  <div className="mt-3 pt-3 border-t">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                      onClick={handleExtractProfile}
+                      disabled={extractProfileMutation.isLoading}
+                    >
+                      <Bot className="h-4 w-4 mr-2" />
+                      {extractProfileMutation.isLoading
+                        ? 'Extracting Profile Data...'
+                        : 'Extract Profile Data with AI'
+                      }
+                    </Button>
+                    <p className="text-xs text-muted-foreground mt-2 text-center">
+                      Use AI to extract and populate your profile from resume text
+                    </p>
+                  </div>
                 )}
               </>
             ) : (

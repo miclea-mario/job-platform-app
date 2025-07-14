@@ -148,6 +148,7 @@ const Profile = ({
           <ResumeSection
             resume={resume}
             onUpdate={(data) => updateProfileSection('resume', data)}
+            onProfileUpdate={refetch}
           />
 
           <SkillsSection
