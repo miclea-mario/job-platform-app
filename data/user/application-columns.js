@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
+import { APPLICATION_STATUS } from '@constants/application';
 import { formatDate } from '@functions';
 import { Video } from 'lucide-react';
 
@@ -101,6 +102,10 @@ const applicationColumns = [
 
       if (!hasInterview) {
         return <span className="text-muted-foreground text-sm">No interview scheduled</span>;
+      }
+
+      if (application.status === APPLICATION_STATUS.INTERVIEWED) {
+        return <span className="text-muted-foreground text-sm">Interview completed</span>;
       }
 
       const interviewDate = new Date(application.interview.date);
