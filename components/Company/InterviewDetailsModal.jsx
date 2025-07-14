@@ -86,7 +86,7 @@ const InterviewDetailsModal = ({ application, isOpen, onClose }) => {
           <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <div className="flex items-center gap-2 mb-2">
               <FileText className="h-4 w-4 text-gray-700" />
-              <span className="text-sm font-medium text-gray-700">Report Status</span>
+              <span className="text-sm font-medium text-gray-700">AI Report Status</span>
             </div>
             <div className="flex items-center gap-2">
               {interview?.reportStatus === INTERVIEW_REPORT_STATUS.GENERATED && (
