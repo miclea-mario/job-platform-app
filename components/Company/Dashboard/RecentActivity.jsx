@@ -3,6 +3,7 @@
 import { Badge } from '@components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@components/ui/card';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { APPLICATION_STATUS } from '@constants/application';
 import { formatDistanceToNow } from 'date-fns';
 import {
   AlertCircle,
@@ -111,8 +112,10 @@ const RecentActivity = ({ recentActivity = [], applications = [] }) => {
       dayAgo.setDate(dayAgo.getDate() - 1);
       return new Date(app.createdAt) > dayAgo;
     }).length,
-    pendingReview: applications.filter((app) => app.status === 'pending').length,
-    scheduledInterviews: applications.filter((app) => app.status === 'interview').length,
+    pendingReview: applications.filter((app) => app.status === APPLICATION_STATUS.PENDING).length,
+    scheduledInterviews: applications.filter(
+      (app) => app.status === APPLICATION_STATUS.PENDING_INTERVIEW
+    ).length,
   };
 
   return (

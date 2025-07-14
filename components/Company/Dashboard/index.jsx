@@ -173,7 +173,10 @@ const Dashboard = () => {
               applications={applicationsData?.applications || []}
               chartData={applicationsData?.chartData || []}
             />
-            <RecentActivity recentActivity={applicationsData?.recentActivity || []} />
+            <RecentActivity
+              recentActivity={applicationsData?.recentActivity || []}
+              applications={applicationsData?.applications}
+            />
           </div>
         </TabsContent>
 
