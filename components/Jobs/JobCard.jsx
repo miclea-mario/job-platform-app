@@ -79,12 +79,6 @@ const JobCard = ({ job }) => {
               {job.salary.min.toLocaleString()} - {job.salary.max.toLocaleString()} €/m
             </Badge>
           )}
-          {job.jobMatchReport?.score && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-muted-foreground">AI Match:</span>
-              <CircularProgress value={job.jobMatchReport.score} size={32} />
-            </div>
-          )}
         </div>
 
         {/* Additional Info Section */}
@@ -103,6 +97,13 @@ const JobCard = ({ job }) => {
             <span>•</span>
             <span>{diffDays} days ago</span>
           </div>
+          {job.jobMatchReport?.score && (
+            <div className="flex items-center gap-1">
+              <span>•</span>
+              <span className="text-xs font-medium text-muted-foreground">AI Match</span>
+              <CircularProgress value={job.jobMatchReport.score} size={32} />
+            </div>
+          )}
         </div>
       </Card>
     </>
