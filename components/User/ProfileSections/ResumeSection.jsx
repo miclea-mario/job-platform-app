@@ -6,7 +6,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@components/u
 import { formatDate } from '@functions';
 import { useMutation } from '@hooks';
 import { toaster } from '@lib';
-import { Bot, CheckCircle, Download, Edit, FileText, Sparkles, Upload, XCircle } from 'lucide-react';
+import { CheckCircle, Download, Edit, FileText, Sparkles, Stars, Upload, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -166,7 +166,7 @@ const ResumeSection = ({ resume, onUpdate, onProfileUpdate }) => {
                       onClick={handleExtractProfile}
                       disabled={extractProfileMutation.isLoading}
                     >
-                      <Bot className="h-4 w-4 mr-2" />
+                      <Stars className="h-4 w-4 mr-2" />
                       {extractProfileMutation.isLoading
                         ? 'Extracting Profile Data...'
                         : 'Extract Profile Data with AI'
