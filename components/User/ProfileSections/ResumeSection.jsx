@@ -45,6 +45,11 @@ const ResumeSection = ({ resume, onUpdate, onProfileUpdate }) => {
   });
 
   const extractProfileMutation = useMutation(extractProfileFromResume, {
+    successCallback: () => {
+      if (onProfileUpdate) {
+        onProfileUpdate();
+      }
+    },
     onError: (error) => {
       toaster.error(error.message || 'Failed to extract profile data');
     },
